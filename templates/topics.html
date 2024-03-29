@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Topics in {{ section.title }}</title>
+</head>
+<body>
+    <h1>Topics in {{ section.title }}</h1>
+    <ul>
+        {% for topic in section.topics %}
+            <li>{{ topic.title }} - {{ topic.date_posted }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
