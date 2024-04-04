@@ -7,19 +7,19 @@
 </head>
 <body>
 {% include 'nav.html' %}
-    <div class="container mt-4">
-        <h1>Задайте ваш вопрос</h1>
-        <form method="post">
-            <div class="mb-3">
-                <label for="questionTitle" class="form-label">Заголовок вопроса:</label>
-                <input type="text" class="form-control" id="questionTitle" name="title">
-            </div>
-            <div class="mb-3">
-                <label for="questionText" class="form-label">Текст вопроса:</label>
-                <textarea class="form-control" id="questionText" name="text" rows="3"></textarea>
-            </div>
-            <input type="submit" class="btn btn-primary" value="Отправить">
-        </form>
-    </div>
+<div class="container mt-4">
+    <h1>Задайте ваш вопрос</h1>
+    <form method="post">
+        <div class="mb-3">
+            <label for="questionTitle" class="form-label">Заголовок вопроса:</label>
+            <input type="text" class="form-control" id="questionTitle" name="title">
+        </div>
+        <div class="mb-3">
+            <label for="questionText" class="form-label">Текст вопроса:</label>
+            <textarea class="form-control" id="questionText" name="text" rows="3"></textarea>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Отправить">
+    </form>
+</div>
 </body>
 </html>

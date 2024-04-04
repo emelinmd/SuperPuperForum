@@ -5,11 +5,11 @@
     <title>Forum Sections</title>
 </head>
 <body>
-    <h1>Forum Sections</h1>
-    <ul>
-        {% for section in sections %}
-            <li><a href="{{ url_for('topics', section_id=section.id) }}">{{ section.title }}</a>: {{ section.description }}</li>
-        {% endfor %}
-    </ul>
+<h1>Forum Sections</h1>
+<ul>
+    {% for section in sections %}
+    <li><a href="{{ url_for('topics', section_id=section.id) }}">{{ section.title }}</a>: {{ section.description }}</li>
+    {% endfor %}
+</ul>
 </body>
 </html>

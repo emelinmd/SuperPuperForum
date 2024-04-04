@@ -1,0 +1,13 @@
+.btn-custom {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-custom:hover, .btn-custom:focus {
+    background-color: #2980b9;
+    color: #ffffff;
+}
