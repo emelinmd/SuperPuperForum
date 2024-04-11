@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm, SectionForm
+from forms import QuestionForm
 from flask import flash
 
 app = Flask(__name__)
@@ -24,10 +24,8 @@ login_manager.login_view = 'login'
 @app.route('/')
 @app.route('/index')
 def index():
-    params = {
-        'title': 'Супер'
-    }
-    return render_template("index.html", **params)
+    sections = Section.query.all()
+    return render_template("index.html", sections=sections)
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -39,9 +37,42 @@ def upload_file():
 
 @app.route('/ask_question', methods=['GET', 'POST'])
 def ask_question():
-    if request.method == 'POST':
+    form = QuestionForm()
+    if form.validate_on_submit():
+        db.session.commit()
         return redirect(url_for('index'))
-    return render_template('ask_question.html')
+    return render_template('ask_question.html', form=form)
+
+
+@app.route('/sections/<int:section_id>', methods=['GET', 'POST'])
+def section(section_id):
+    form = QuestionForm()
+    if form.validate_on_submit():
+        new_topic = Topic(content=form.content.data, section_id=section_id)
+        db.session.add(new_topic)
+        db.session.commit()
+        flash('Вопрос добавлен.')
+        return redirect(url_for('section', section_id=section_id))
+    section = Section.query.get_or_404(section_id)
+    topics = Topic.query.filter_by(section_id=section_id).order_by(Topic.date_posted.desc()).all()
+    return render_template('section.html', section=section, form=form, topics=topics)
+
+
+@app.route('/topics/<int:topic_id>')
+def topic(topic_id):
+    topic = Topic.query.get_or_404(topic_id)
+    return render_template('topic.html', topic=topic)
+
+
+@app.route('/create_section', methods=['GET', 'POST'])
+def create_section():
+    form = SectionForm()
+    if form.validate_on_submit():
+        new_section = Section(title=form.title.data, description=form.description.data)
+        db.session.add(new_section)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('create_section.html', form=form)
 
 
 @login_manager.user_loader
@@ -63,7 +94,7 @@ def register_user():
         new_user.set_password(form.password.data)
         db.session.add(new_user)
         db.session.commit()
-        flash('Регистрация прошла успешно. Пожалуйста, войдите в систему.')
+        flash('Регистрация прошла успешно.')
         return redirect(url_for('login'))
     return render_template('register.html', title='Регистрация', form=form)
 

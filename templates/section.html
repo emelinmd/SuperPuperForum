@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ section.title }}</h2>
+    <p>{{ section.description }}</p>
+
+
+    <form method="POST" action="{{ url_for('section', section_id=section.id) }}">
+        {{ form.hidden_tag() }}
+        {{ form.content.label }} {{ form.content }}
+        {{ form.submit }}
+    </form>
+
+    <ul>
+        {% for topic in topics %}
+        <li>{{ topic.content }} <small>Posted at {{ topic.date_posted }}</small></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

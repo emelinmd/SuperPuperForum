@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h1>Добро пожаловать на Супер-пупер Форум!</h1>
-    </div>
+<div class="container mt-4">
+    <h1>Разделы форума</h1>
+    {% for section in sections %}
+        <div>
+            <h2><a href="{{ url_for('section', section_id=section.id) }}">{{ section.title }}</a></h2>
+            <p>{{ section.description }}</p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
