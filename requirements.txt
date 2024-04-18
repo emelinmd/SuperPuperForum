@@ -15,16 +15,9 @@ itsdangerous
 Jinja2
 lxml
 MarkupSafe
-Pillow
-Pillow-PIL
 pygame
 pymorphy3
 pymorphy3-dicts-ru
-PyQt5
-PyQt5-Qt5
-PyQt5-sip
-python-docx
-python-pptx
 requests
 SQLAlchemy
 typing_extensions
