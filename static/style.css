@@ -11,3 +11,94 @@
     background-color: #2980b9;
     color: #ffffff;
 }
+
+/* Добавьте эти стили в файл static/style.css вашего проекта */
+.card-title {
+    color: #007bff; /* Измените цвета на свой вкус */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+/* Добавьте эти стили в файл static/style.css вашего проекта */
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+}
+
+.card-title {
+    font-size: 1.25rem; /* Увеличьте размер шрифта для заголовков карточек */
+    color: #007bff; /* Измените цвета на свой вкус */
+}
+
+.card-text {
+    font-size: 1rem; /* Увеличьте размер шрифта для текста */
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.text-muted {
+    color: #6c757d; /* Измените цвета на свой вкус */
+}
+
+.upload-container {
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.upload-container h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+}
+
+

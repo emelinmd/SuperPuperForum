@@ -1,21 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h2>{{ section.title }}</h2>
-    <p>{{ section.description }}</p>
+<div class="container mt-4">
+    <h1 class="mb-4">{{ section.title }}</h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.content.label(class="form-label") }}
+                    {{ form.content(class="form-control") }}
+                </div>
+                {{ form.submit(class="btn btn-success") }}
+            </form>
+        </div>
+    </div>
+    {% for topic in topics %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h5 class="card-title">{{ users[topic.user_id].username if topic.user_id in users else "Аноним" }}</h5>
+                <small class="text-muted">{{ topic.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
+            </div>
+            <p class="card-text">{{ topic.content }}</p>
+        </div>
+    </div>
+    {% endfor %}
 
-
-    <form method="POST" action="{{ url_for('section', section_id=section.id) }}">
-        {{ form.hidden_tag() }}
-        {{ form.content.label }} {{ form.content }}
-        {{ form.submit }}
-    </form>
-
-    <ul>
-        {% for topic in topics %}
-        <li>{{ topic.content }} <small>Posted at {{ topic.date_posted }}</small></li>
-        {% endfor %}
-    </ul>
 </div>
 {% endblock %}

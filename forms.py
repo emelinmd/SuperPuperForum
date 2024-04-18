@@ -1,8 +1,14 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField, SubmitField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField
+from wtforms.validators import Email, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_wtf import FlaskForm
+from wtforms import SubmitField
+from wtforms import FileField
+from wtforms_sqlalchemy.fields import QuerySelectField
+from wtforms.validators import DataRequired
+from flask_wtf.file import FileRequired, FileAllowed
+from models import Section
 
 db = SQLAlchemy()
 
@@ -38,3 +44,17 @@ class Topic(db.Model):
     content = db.Column(db.Text, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     section_id = db.Column(db.Integer, db.ForeignKey('section.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='topics')
+
+
+class ImageUploadForm(FlaskForm):
+    section = QuerySelectField(
+        'Выберите тему',
+        query_factory=lambda: Section.query.all(),
+        get_label='title',
+        allow_blank=False
+    )
+    image = FileField('Выберите изображение',
+                      validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Только изображения!')])
+    submit = SubmitField('Загрузить')

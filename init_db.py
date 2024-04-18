@@ -1,6 +1,6 @@
 from server import app
 from extensions import db
-from models import Section
+from models import Section, User
 
 with app.app_context():
     db.create_all()

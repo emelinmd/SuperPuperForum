@@ -8,7 +8,16 @@
 <h1>Topics in {{ section.title }}</h1>
 <ul>
     {% for topic in section.topics %}
-    <li>{{ topic.title }} - {{ topic.date_posted }}</li>
+    <li>
+        {{ topic.title }} - {{ topic.date_posted }}
+        {% if topic.image_filename %}
+        <img src="{{ url_for('static', filename='uploads/' + topic.image_filename) }}" alt="Topic Image">
+        {% endif %}
+        {% if current_user.is_admin %}
+        <a href="{{ url_for('delete_topic', topic_id=topic.id) }}">Удалить тему</a>
+        <a href="{{ url_for('delete_question', topic_id=topic.id) }}">Удалить вопрос</a>
+        {% endif %}
+    </li>
     {% endfor %}
 </ul>
 </body>

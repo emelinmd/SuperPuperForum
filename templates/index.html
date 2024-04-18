@@ -2,12 +2,21 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>Разделы форума</h1>
-    {% for section in sections %}
-        <div>
-            <h2><a href="{{ url_for('section', section_id=section.id) }}">{{ section.title }}</a></h2>
-            <p>{{ section.description }}</p>
+    <h1 class="mb-4 text-center">Разделы форума</h1>
+    <div class="row">
+        {% for section in sections %}
+        <div class="col-sm-6 col-lg-4 mb-3">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ section.title }}</h5>
+                    <div class="mt-auto">
+                        <a href="{{ url_for('section', section_id=section.id) }}" class="btn btn-primary">Перейти в
+                            раздел</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

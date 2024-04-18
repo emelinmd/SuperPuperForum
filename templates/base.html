@@ -6,7 +6,6 @@
     <title>{{ title | default("Супер-пупер Форум") }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
 {% with messages = get_flashed_messages() %}
@@ -35,6 +34,12 @@
             </li>
             {% if current_user.is_authenticated %}
             <span class="navbar-text email-display">{{ current_user.email }}</span>
+            {% if current_user.is_admin %}
+            <!-- Кнопки для администратора -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">Админ-панель</a>
+            </li>
+            {% endif %}
             <li class="nav-item"><a href="{{ url_for('logout') }}" class="btn btn-custom">Выйти</a></li>
             {% else %}
             <li class="nav-item"><a href="{{ url_for('register_user') }}" class="btn btn-custom">Регистрация</a></li>
