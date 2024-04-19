@@ -19,10 +19,12 @@
     <div class="card mb-3">
         <div class="card-body">
             <div class="d-flex justify-content-between">
+
                 <h5 class="card-title">{{ users[topic.user_id].username if topic.user_id in users else "Аноним" }}</h5>
                 <small class="text-muted">{{ topic.date_posted.strftime('%Y-%m-%d %H:%M') }}</small>
             </div>
             <p class="card-text">{{ topic.content }}</p>
+            <img src="{{ url_for('static', filename='uploads/' + topic.content) }}"/>
         </div>
     </div>
     {% endfor %}

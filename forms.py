@@ -1,3 +1,4 @@
+#библиотеки
 from wtforms import StringField, TextAreaField, PasswordField, BooleanField
 from wtforms.validators import Email, EqualTo
 from flask_sqlalchemy import SQLAlchemy
@@ -13,17 +14,20 @@ from models import Section
 db = SQLAlchemy()
 
 
+#кнопки
 class QuestionForm(FlaskForm):
     content = TextAreaField('Содержание', validators=[DataRequired()])
     submit = SubmitField('Отправить')
 
 
+#разделы
 class SectionForm(FlaskForm):
     title = StringField('Название раздела', validators=[DataRequired()])
     description = TextAreaField('Описание')
     submit = SubmitField('Создать')
 
 
+#регистрация
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(message='Некорректный email')])
     password = PasswordField('Пароль', validators=[DataRequired()])
@@ -31,6 +35,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Регистрация')
 
 
+#вход
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Пароль', validators=[DataRequired()])
@@ -48,6 +53,7 @@ class Topic(db.Model):
     user = db.relationship('User', backref='topics')
 
 
+#темы
 class ImageUploadForm(FlaskForm):
     section = QuerySelectField(
         'Выберите тему',
@@ -55,6 +61,7 @@ class ImageUploadForm(FlaskForm):
         get_label='title',
         allow_blank=False
     )
+    #изображение
     image = FileField('Выберите изображение',
                       validators=[FileRequired(), FileAllowed(['jpg', 'png'], 'Только изображения!')])
     submit = SubmitField('Загрузить')

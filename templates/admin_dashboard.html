@@ -14,12 +14,12 @@
         </tr>
         </thead>
         <tbody>
-        {% for topic in topics %}
+        {% for section in sections %}
         <tr>
             <td>{{ loop.index }}</td>
-            <td>{{ topic.title }}</td>
+            <td>{{ section.title }}</td>
             <td>
-                <form action="{{ url_for('delete_topic', topic_id=topic.id) }}" method="post">
+                <form action="{{ url_for('delete_section', section_id=section.id) }}" method="post">
                     <button type="submit" class="btn btn-danger">Удалить</button>
                 </form>
             </td>
@@ -41,11 +41,11 @@
         </tr>
         </thead>
         <tbody>
-        {% for question in questions %}
+        {% for question in topics %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>{{ question.content }}</td>
-            <td>{{ question.topic.title }}</td>
+            <td>{{ section_topics[question.id] }}</td>
             <td>
                 <form action="{{ url_for('delete_question', question_id=question.id) }}" method="post">
                     <button type="submit" class="btn btn-danger">Удалить</button>

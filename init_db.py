@@ -1,3 +1,4 @@
+#база данных
 from server import app
 from extensions import db
 from models import Section, User

@@ -1,3 +1,4 @@
+#библиотеки
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
@@ -37,10 +38,8 @@ class Topic(db.Model):
     section_id = Column(Integer, ForeignKey('section.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', back_populates='topics')
-    image_filename = db.Column(db.String(128))  # Путь к файлу изображения
-
-    def __repr__(self):
-        return f'<Topic {self.title}>'
+    image_filename = db.Column(db.String(128))
+    # Путь к файлу изображения
 
 
 class Message(db.Model):

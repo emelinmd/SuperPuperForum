@@ -10,15 +10,18 @@
 <div class="messages">
     {% for message in topic.messages %}
     <div class="message">
-        <!-- Здесь также заменяем отображение email на "Аноним" -->
+        <!-- Заменяем отображение email на "Аноним" -->
         <p>Аноним wrote:</p>
         <p>{{ message.content }}</p>
+        <p>{{ message.image_filename }}</p>
         {% if message.image_filename %}
-        <!-- Убедитесь, что файл изображения находится в папке static/uploads -->
-        <img src="{{ url_for('static', filename='uploads/' + message.image_filename) }}" alt="Uploaded Image">
+        <!-- Файл изображения находится в папке static/uploads -->
+        <div>
+            <img src="{{ url_for('static', filename='uploads/' + message.image_filename) }}"/>
+        </div>
         {% else %}
-        <!-- Альтернативный текст или действие, если изображение отсутствует -->
-        <p>[Изображение не найдено]</p>
+        <!-- Если изображение отсутствует -->
+            <p>[Изображение не найдено]</p>
         {% endif %}
     </div>
     {% endfor %}

@@ -1,3 +1,4 @@
+# библиотеки
 from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from forms import RegistrationForm, LoginForm, SectionForm
@@ -26,6 +27,8 @@ from models import User, Section, Topic, Message
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# модерация
+# плохие слова
 banned_words = [
     "блять",
     "сука",
@@ -107,6 +110,7 @@ banned_words = [
 ]
 
 
+# если плохие слова есть
 def contains_banned_word(text, banned_words):
     for word in banned_words:
         if word in text.lower():
@@ -121,6 +125,7 @@ def index():
     return render_template("index.html", sections=sections)
 
 
+# Название файла содержит неприемлемое слово и не может быть использовано.
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload_image():
@@ -137,9 +142,11 @@ def upload_image():
 
         # Создание нового сообщения в теме с изображением
         topic = Topic(
-            content=f'<img src="{url_for("static", filename="uploads/" + filename)}" alt="Uploaded Image">',
+
+            content=filename,
             section_id=form.section.data.id,
-            user_id=current_user.id,  # Если вы хотите сохранить информацию о пользователе
+            user_id=current_user.id,
+            # Сохранение информации о пользователе
             image_filename=filename
         )
         db.session.add(topic)
@@ -162,7 +169,7 @@ def ask_question():
         # Генерация заголовка из содержания вопроса
         title = form.content.data[:50] if len(form.content.data) > 50 else form.content.data
 
-        # Убедитесь, что заголовок не пустой
+        # Заголовок не пустой
         title = title or "Без заголовка"
 
         new_topic = Topic(title=title, content=form.content.data, section_id=1, user_id=current_user.id)
@@ -179,7 +186,7 @@ def section(section_id):
     form = QuestionForm()
     section = Section.query.get_or_404(section_id)
     if form.validate_on_submit():
-        # Проверка на запрещенные слова
+        # Проверка на плохие слова
         if contains_banned_word(form.content.data, banned_words):
             flash('Вопрос содержит неприемлемые слова.', 'danger')
             return redirect(url_for('section', section_id=section_id))
@@ -188,7 +195,8 @@ def section(section_id):
         new_topic = Topic(
             content=form.content.data,
             section_id=section_id,
-            user_id=current_user.id,  # это уже связывает вопрос с пользователем
+            user_id=current_user.id,
+            # связывает вопрос с пользователем
             # не нужно передавать user_email, потому что мы уже передали user_id
         )
         db.session.add(new_topic)
@@ -203,15 +211,18 @@ def section(section_id):
 @app.route('/topics/<int:topic_id>')
 def topic(topic_id):
     topic = Topic.query.get_or_404(topic_id)
-    user_email = topic.user.email  # Тут предполагается, что у объекта Topic есть связь 'user'
+    user_email = topic.user.email
+    # У объекта Topic есть связь 'user'
     messages = [
         {
             'content': message.content,
             'image_filename': url_for('static',
                                       filename='uploads/' + message.image_filename) if message.image_filename else None,
-            'user_email': message.user.email  # и у объекта Message тоже есть связь 'user'
+            'user_email': message.user.email
+            # у объекта Message тоже есть связь 'user'
         }
-        for message in user_email  # замените topic.messages на реальное свойство, содержащее сообщения
+        for message in user_email
+        # замените topic.messages на реальное свойство, содержащее сообщения
     ]
     return render_template('topic.html', topic=topic, user_email=user_email, messages=messages)
 
@@ -242,8 +253,15 @@ def admin_dashboard():
         return redirect(url_for('index'))
 
     topics = Topic.query.all()
+    section_topics = dict()
+    sections = Section.query.all()
+    for t in topics:
+        section_topics[t.id] = Section.query.get(t.section_id).title
+    print(section_topics)
+    print(topics[0].section)
     messages = Message.query.all()
-    return render_template('admin_dashboard.html', topics=topics, messages=messages)
+    return render_template('admin_dashboard.html', topics=topics, messages=messages, sections=sections,
+                           section_topics=section_topics)
 
 
 @login_manager.user_loader
@@ -298,6 +316,19 @@ def delete_topic(topic_id):
     return redirect(url_for('admin_dashboard'))
 
 
+@app.route('/delete_section/<int:section_id>', methods=['POST'])
+@login_required
+def delete_section(section_id):
+    if not current_user.is_admin:
+        flash('У вас нет прав для выполнения этого действия.', 'danger')
+        return redirect(url_for('index'))
+    section = Section.query.get_or_404(section_id)
+    db.session.delete(section)
+    db.session.commit()
+    flash('Тема успешно удалена.', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+
 @app.route('/delete_question/<int:question_id>', methods=['POST'])
 @login_required
 def delete_question(question_id):
@@ -323,5 +354,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# запуск
 if __name__ == '__main__':
     app.run(debug=True)
